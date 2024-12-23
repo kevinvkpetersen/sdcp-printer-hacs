@@ -4,5 +4,6 @@
     "documentation": "https://github.com/kevinvkpetersen/sdcp-printer-hacs",
     "issue_tracker": "https://github.com/kevinvkpetersen/sdcp-printer-hacs/issues",
     "codeowners": ["@kevinvkpetersen"],
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "requirements": ["websocket-client"]
 }
