@@ -1,10 +1,11 @@
+"""SDCP Printer integration for Home Assistant."""
+
 import logging
 
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import ConfigType
 from homeassistant.exceptions import ConfigEntryError
-
-import sdcp_printer.scanner
+from homeassistant.helpers.typing import ConfigType
+from sdcp_printer import SDCPPrinter
 
 DOMAIN = "sdcp_printer"
 
@@ -14,13 +15,16 @@ _logger = logging.getLogger(__package__)
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     hass.states.async_set(f"{DOMAIN}.test", "Hello World")
 
-    printers = sdcp_printer.scanner.discover_devices()
-    _logger.info(f"Found {len(printers)} printers")
-    if not printers:
-        raise ConfigEntryError("No printers found")
+    printer_configs = config[DOMAIN].get("printers")
+    if not printer_configs:
+        raise ConfigEntryError("No printers configured")
 
-    printers[0].refresh_status()
+    printer_ip = printer_configs[0].get("ip")
+    printer = SDCPPrinter.get_printer_info(printer_ip)
+    printer.refresh_status()
 
-    hass.data[DOMAIN] = {"printer": printers[0]}
+    hass.data[DOMAIN] = {"printer": printer}
+
+    hass.helpers.discovery.load_platform("sensor", DOMAIN, {}, config)
 
     return True

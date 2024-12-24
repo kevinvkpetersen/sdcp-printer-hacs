@@ -1,7 +1,7 @@
 from homeassistant.components.sensor import SensorEntity
 
 from . import DOMAIN
-from sdcp_printer.printer import SDCPPrinter
+from sdcp_printer import SDCPPrinter
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
