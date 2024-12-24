@@ -14,13 +14,13 @@ class SDCPPrinterStatusSensor(SensorEntity):
 
     @property
     def name(self):
-        return 'Printer Status'
+        return "Printer Status"
 
     @property
     def state(self):
         return self._state
 
     def update(self):
-        printer: SDCPPrinter = self.hass.data[DOMAIN]['printer']
+        printer: SDCPPrinter = self.hass.data[DOMAIN]["printer"]
 
         self._state = printer._status
