@@ -6,11 +6,11 @@
                     "ip_address": "IP Address (should be statically assigned)"
                 }
             }
+        },
+        "error": {
+            "connection": "Failed to connect to the printer.",
+            "invalid_response": "Invalid response from the printer.",
+            "unknown": "An unknown error occurred."
         }
-    },
-    "error": {
-        "connection": "Failed to connect to the printer.",
-        "invalid_response": "Invalid response from the printer.",
-        "unknown": "An unknown error occurred."
     }
 }

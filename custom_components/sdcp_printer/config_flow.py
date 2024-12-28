@@ -25,7 +25,7 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             try:
-                printer = SDCPPrinter.get_printer_info(user_input[CONF_IP_ADDRESS])
+                SDCPPrinter.get_printer_info(user_input[CONF_IP_ADDRESS])
             except TimeoutError as exception:
                 _logger.warning("Failed to connect to printer: %s", exception)
                 errors["base"] = "connection"
@@ -38,7 +38,7 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
             else:
                 return self.async_create_entry(
                     title=user_input[CONF_IP_ADDRESS],
-                    data=printer,
+                    data=user_input,
                 )
 
         return self.async_show_form(
