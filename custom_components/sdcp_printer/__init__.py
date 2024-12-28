@@ -13,6 +13,7 @@ _logger = logging.getLogger(__package__)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the SDCP Printer component."""
     hass.states.async_set(f"{DOMAIN}.test", "Hello World")
 
     printer_configs = config[DOMAIN].get("printers")

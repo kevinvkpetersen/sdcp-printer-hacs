@@ -1,14 +1,19 @@
+"""Sensors for SDCP printers."""
+
 from homeassistant.components.sensor import SensorEntity
+from sdcp_printer import SDCPPrinter
 
 from . import DOMAIN
-from sdcp_printer import SDCPPrinter
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
+    """Set up the sensor platform."""
     add_entities([SDCPPrinterStatusSensor()])
 
 
 class SDCPPrinterStatusSensor(SensorEntity):
+    """Sensor for the printer status."""
+
     def __init__(self):
         self._state = None
 

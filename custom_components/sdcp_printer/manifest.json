@@ -1,9 +1,9 @@
 {
     "name": "SDCP Printer Monitor",
     "domain": "sdcp_printer",
-    "documentation": "https://github.com/kevinvkpetersen/sdcp-printer-hacs",
-    "issue_tracker": "https://github.com/kevinvkpetersen/sdcp-printer-hacs/issues",
-    "codeowners": ["@kevinvkpetersen"],
     "version": "0.1.0",
-    "requirements": ["websocket-client"]
+    "requirements": ["websocket-client"],
+    "codeowners": ["@kevinvkpetersen"],
+    "documentation": "https://github.com/kevinvkpetersen/sdcp-printer-hacs",
+    "issue_tracker": "https://github.com/kevinvkpetersen/sdcp-printer-hacs/issues"
 }
