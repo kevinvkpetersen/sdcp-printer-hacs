@@ -1,10 +1,16 @@
 """Config flow for SDCP Printer integration."""
 
-import voluptuous as vol
+import logging
+from json import JSONDecodeError
 
+import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow
 
+from sdcp_printer import SDCPPrinter
+
 from .const import CONF_IP_ADDRESS, DOMAIN
+
+_logger = logging.getLogger(__package__)
 
 
 class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -15,11 +21,25 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Handle a flow initiated by the user."""
+        errors = {}
+
         if user_input is not None:
-            return self.async_create_entry(
-                title=user_input[CONF_IP_ADDRESS],
-                data=user_input,
-            )
+            try:
+                printer = SDCPPrinter.get_printer_info(user_input[CONF_IP_ADDRESS])
+            except TimeoutError as exception:
+                _logger.warning("Failed to connect to printer: %s", exception)
+                errors["base"] = "connection"
+            except JSONDecodeError as exception:
+                _logger.warning("Failed to parse printer response: %s", exception)
+                errors["base"] = "invalid_response"
+            except Exception as exception:
+                _logger.exception("Unexpected error: %s", exception)
+                errors["base"] = "unknown"
+            else:
+                return self.async_create_entry(
+                    title=user_input[CONF_IP_ADDRESS],
+                    data=printer,
+                )
 
         return self.async_show_form(
             step_id="user",
@@ -28,4 +48,5 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_IP_ADDRESS): str,
                 }
             ),
+            errors=errors,
         )
