@@ -3,6 +3,7 @@
     "domain": "sdcp_printer",
     "version": "0.1.0",
     "requirements": ["websocket-client"],
+    "config_flow": true,
     "codeowners": ["@kevinvkpetersen"],
     "documentation": "https://github.com/kevinvkpetersen/sdcp-printer-hacs",
     "issue_tracker": "https://github.com/kevinvkpetersen/sdcp-printer-hacs/issues"
