@@ -4,35 +4,33 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from sdcp_printer import SDCPPrinter
 
 from .const import DOMAIN
+from .coordinator import SDCPPrinterDataUpdateCoordinator
+from .entity import BaseSDCPPrinterEntity
 
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigEntry,
+    entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
-    async_add_entities([SDCPPrinterStatusSensor()])
+    coordinator: SDCPPrinterDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    async_add_entities([SDCPPrinterStatusSensor(coordinator)])
 
 
-class SDCPPrinterStatusSensor(SensorEntity):
+class SDCPPrinterStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
     """Sensor for the printer status."""
 
-    def __init__(self):
-        self._state = None
+    _attr_name = "Printer Status"
 
-    @property
-    def name(self):
-        return "Printer Status"
+    def __init__(self, coordinator: SDCPPrinterDataUpdateCoordinator):
+        """Constructor."""
+        super().__init__(coordinator)
+        self._attr_unique_id = coordinator.printer.id
 
     @property
     def state(self):
-        return self._state
-
-    def update(self):
-        printer: SDCPPrinter = self.hass.data[DOMAIN]["printer"]
-
-        self._state = printer._status
+        """Return the state of the sensor."""
+        return self.coordinator.printer.status
