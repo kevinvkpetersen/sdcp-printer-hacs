@@ -33,4 +33,4 @@ class SDCPPrinterStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self.coordinator.printer.status
+        return self.coordinator.printer.current_status
