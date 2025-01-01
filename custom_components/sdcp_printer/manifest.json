@@ -2,7 +2,7 @@
     "name": "SDCP Printer Monitor",
     "domain": "sdcp_printer",
     "version": "0.1.0",
-    "requirements": ["websocket-client"],
+    "requirements": ["asyncio-dgram", "websockets"],
     "integration_type": "device",
     "config_flow": true,
     "iot_class": "local_polling",

@@ -20,7 +20,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     printer_ip = entry.data[CONF_IP_ADDRESS]
     _logger.debug("Setting up printer: %s", printer_ip)
-    printer = SDCPPrinter.get_printer_info(printer_ip)
+    printer = await SDCPPrinter.get_printer_async(printer_ip)
 
     coordinator = SDCPPrinterDataUpdateCoordinator(hass, printer)
     await coordinator.async_config_entry_first_refresh()
@@ -34,6 +34,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a printer config entry."""
+    coordinator: SDCPPrinterDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    await coordinator.printer.stop_listening_async()
+
     unload_ok = await hass.config_entries.async_unload_platforms(
         entry,
         PLATFORMS,

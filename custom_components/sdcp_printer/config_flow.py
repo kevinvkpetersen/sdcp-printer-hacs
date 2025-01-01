@@ -1,7 +1,6 @@
 """Config flow for SDCP Printer integration."""
 
 import logging
-from json import JSONDecodeError
 
 import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow
@@ -25,11 +24,11 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             try:
-                SDCPPrinter.get_printer_info(user_input[CONF_IP_ADDRESS])
+                await SDCPPrinter.get_printer_async(user_input[CONF_IP_ADDRESS])
             except TimeoutError as exception:
                 _logger.warning("Failed to connect to printer: %s", exception)
                 errors["base"] = "connection"
-            except JSONDecodeError as exception:
+            except AttributeError as exception:
                 _logger.warning("Failed to parse printer response: %s", exception)
                 errors["base"] = "invalid_response"
             except Exception as exception:

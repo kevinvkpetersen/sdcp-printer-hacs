@@ -28,7 +28,7 @@ class SDCPPrinterStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
     def __init__(self, coordinator: SDCPPrinterDataUpdateCoordinator):
         """Constructor."""
         super().__init__(coordinator)
-        self._attr_unique_id = coordinator.printer.id
+        self._attr_unique_id = coordinator.printer.uuid
 
     @property
     def state(self):
