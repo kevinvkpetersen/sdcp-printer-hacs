@@ -27,11 +27,6 @@ class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
 
     _attr_name = "Current Status"
 
-    def __init__(self, coordinator: SDCPPrinterDataUpdateCoordinator):
-        """Constructor."""
-        super().__init__(coordinator)
-        self._attr_unique_id = coordinator.printer.uuid
-
     @property
     def native_value(self):
         """Return the state of the sensor."""
