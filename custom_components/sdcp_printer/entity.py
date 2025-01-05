@@ -1,6 +1,6 @@
 """Base entities for SDCP Printer integration."""
 
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
@@ -10,10 +10,19 @@ from .coordinator import SDCPPrinterDataUpdateCoordinator
 class BaseSDCPPrinterEntity(CoordinatorEntity[SDCPPrinterDataUpdateCoordinator]):
     """Base class for SDCP Printer entities."""
 
-    def __init__(self, coordinator: SDCPPrinterDataUpdateCoordinator):
+    _attr_has_entity_name = True
+
+    def __init__(
+        self,
+        coordinator: SDCPPrinterDataUpdateCoordinator,
+        entity_description: EntityDescription,
+    ):
         """Constructor"""
         super().__init__(coordinator)
-        self._attr_unique_id = coordinator.printer.uuid
+        self.entity_description = entity_description
+        entity_key = entity_description.key
+        self._attr_translation_key = entity_key
+        self._attr_unique_id = f"{coordinator.printer.uuid}_{entity_key}"
 
     @property
     def device_info(self) -> DeviceInfo:

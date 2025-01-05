@@ -12,5 +12,19 @@
             "invalid_response": "Invalid response from the printer.",
             "unknown": "An unknown error occurred."
         }
+    },
+    "entity": {
+        "sensor": {
+            "current_status": {
+                "name": "Current Status",
+                "state": {
+                    "idle": "Idle",
+                    "printing": "Printing",
+                    "file_transfer": "Uploading File",
+                    "exposure_test": "Exposure Testing",
+                    "device_test": "Calibrating"
+                }
+            }
+        }
     }
 }
