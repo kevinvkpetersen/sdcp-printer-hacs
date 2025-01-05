@@ -7,6 +7,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from sdcp_printer import SDCPPrinter
+from sdcp_printer.enum import SDCPFrom
 
 from .const import DOMAIN
 
@@ -41,4 +42,4 @@ class SDCPPrinterDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         """Fetch data from the printer."""
-        await self.printer.refresh_status_async()
+        await self.printer.refresh_status_async(sdcp_from=SDCPFrom.SERVER)
