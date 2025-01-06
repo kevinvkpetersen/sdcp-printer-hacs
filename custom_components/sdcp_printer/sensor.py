@@ -1,9 +1,12 @@
 """Sensors for SDCP printers."""
 
+from dataclasses import dataclass
+
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
+    SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -14,13 +17,32 @@ from sdcp_printer.enum import SDCPMachineStatus
 
 from .const import DOMAIN, SDCPMachineStatusKey
 from .coordinator import SDCPPrinterDataUpdateCoordinator
-from .entity import BaseSDCPPrinterEntity
+from .entity import BaseSDCPPrinterEntity, BaseSDCPPrinterEntityDescription
+
+
+@dataclass(kw_only=True)
+class SDCPSensorEntityDescription(
+    BaseSDCPPrinterEntityDescription, SensorEntityDescription
+):
+    """Base class for SDCP Printer sensor entity descriptions."""
+
 
 CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
     key="current_status",
     device_class=SensorDeviceClass.ENUM,
     options=list(SDCPMachineStatusKey),
 )
+
+SENSOR_DESCRIPTIONS = [
+    SDCPSensorEntityDescription(
+        key="uv_led_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement="°C",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+        value_fn=lambda coordinator: coordinator.printer.uv_led_temperature,
+    ),
+]
 
 
 async def async_setup_entry(
@@ -35,8 +57,16 @@ async def async_setup_entry(
             SDCPPrinterCurrentStatusSensor(
                 coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
             ),
+            *[
+                SDCPPrinterSensor(coordinator, description)
+                for description in SENSOR_DESCRIPTIONS
+            ],
         ]
     )
+
+
+class SDCPPrinterSensor(BaseSDCPPrinterEntity, SensorEntity):
+    """Generic sensor for the printer."""
 
 
 class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):

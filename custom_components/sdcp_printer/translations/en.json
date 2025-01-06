@@ -24,6 +24,9 @@
                     "exposure_test": "Exposure Testing",
                     "device_test": "Calibrating"
                 }
+            },
+            "uv_led_temperature": {
+                "name": "UV LED Temperature"
             }
         }
     }
