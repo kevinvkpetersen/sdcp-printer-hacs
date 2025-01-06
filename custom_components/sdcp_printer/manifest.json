@@ -1,7 +1,7 @@
 {
     "name": "SDCP Printer Monitor",
     "domain": "sdcp_printer",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "requirements": ["asyncio-dgram", "sdcp-printer", "websockets"],
     "integration_type": "device",
     "config_flow": true,
