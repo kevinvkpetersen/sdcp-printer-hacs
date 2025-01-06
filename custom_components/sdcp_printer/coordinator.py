@@ -7,6 +7,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from sdcp_printer import SDCPPrinter
+
+# pylint: disable-next=import-error, no-name-in-module
 from sdcp_printer.enum import SDCPFrom
 
 from .const import DOMAIN

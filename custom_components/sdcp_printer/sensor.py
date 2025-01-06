@@ -9,6 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+# pylint: disable-next=import-error, no-name-in-module
 from sdcp_printer.enum import SDCPMachineStatus
 
 from .const import DOMAIN, SDCPMachineStatusKey
