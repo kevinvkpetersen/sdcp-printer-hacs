@@ -31,6 +31,7 @@ class SDCPPrinterConfigFlow(ConfigFlow, domain=DOMAIN):
             except AttributeError as exception:
                 _logger.warning("Failed to parse printer response: %s", exception)
                 errors["base"] = "invalid_response"
+            #pylint: disable=broad-except
             except Exception as exception:
                 _logger.exception("Unexpected error: %s", exception)
                 errors["base"] = "unknown"

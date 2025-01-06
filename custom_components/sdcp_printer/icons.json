@@ -1,0 +1,16 @@
+{
+    "entity": {
+        "sensor": {
+            "current_status": {
+                "default": "mdi:printer-3d",
+                "state": {
+                    "idle": "mdi:sleep",
+                    "printing": "mdi:printer-3d-nozzle",
+                    "file_transfer": "mdi:file-upload",
+                    "exposure_test": "mdi:monitor-eye",
+                    "device_test": "mdi:cog-sync"
+                }
+            }
+        }
+    }
+}

@@ -12,5 +12,28 @@
             "invalid_response": "Invalid response from the printer.",
             "unknown": "An unknown error occurred."
         }
+    },
+    "entity": {
+        "sensor": {
+            "current_status": {
+                "name": "Current Status",
+                "state": {
+                    "idle": "Idle",
+                    "printing": "Printing",
+                    "file_transfer": "Uploading File",
+                    "exposure_test": "Exposure Testing",
+                    "device_test": "Calibrating"
+                }
+            },
+            "uv_led_temperature": {
+                "name": "UV LED Temperature"
+            },
+            "screen_usage": {
+                "name": "UV LED Screen Usage Time"
+            },
+            "film_usage": {
+                "name": "FEP Usage"
+            }
+        }
     }
 }
