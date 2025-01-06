@@ -9,7 +9,9 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import UnitOfTemperature, UnitOfTime
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 # pylint: disable-next=import-error, no-name-in-module
@@ -37,10 +39,28 @@ SENSOR_DESCRIPTIONS = [
     SDCPSensorEntityDescription(
         key="uv_led_temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement="°C",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
         value_fn=lambda coordinator: coordinator.printer.uv_led_temperature,
+    ),
+    SDCPSensorEntityDescription(
+        key="screen_usage",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.SECONDS,
+        unit_of_measurement=UnitOfTime.HOURS,
+        suggested_display_precision=0,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:sun-clock-outline",
+        value_fn=lambda coordinator: coordinator.printer.screen_usage,
+    ),
+    SDCPSensorEntityDescription(
+        key="film_usage",
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:file-arrow-up-down-outline",
+        value_fn=lambda coordinator: coordinator.printer.film_usage,
     ),
 ]
 

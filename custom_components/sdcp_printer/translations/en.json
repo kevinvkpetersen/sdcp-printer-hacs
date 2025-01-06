@@ -27,6 +27,12 @@
             },
             "uv_led_temperature": {
                 "name": "UV LED Temperature"
+            },
+            "screen_usage": {
+                "name": "UV LED Screen Usage Time"
+            },
+            "film_usage": {
+                "name": "FEP Usage"
             }
         }
     }
