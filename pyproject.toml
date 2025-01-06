@@ -1,11 +1,11 @@
 [project]
 name = "sdcp_printer_hacs"
 description = "A custom integration to communicate with 3D printers that communicate with the SDCP protocol."
-version = "0.1.1"
+version = "0.2.0"
 requires-python = ">=3.11"
 dependencies = [
     "asyncio-dgram",
-    "sdcp-printer",
+    "sdcp-printer>=0.2.0",
     "websockets",
 ]
 readme = "README.md"
