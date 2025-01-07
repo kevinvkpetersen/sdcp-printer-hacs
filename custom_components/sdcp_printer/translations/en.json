@@ -25,14 +25,24 @@
                     "device_test": "Calibrating"
                 }
             },
-            "uv_led_temperature": {
-                "name": "UV LED Temperature"
-            },
-            "screen_usage": {
-                "name": "UV LED Screen Usage Time"
-            },
-            "film_usage": {
-                "name": "FEP Usage"
+            "uv_led_temperature": { "name": "UV LED Temperature" },
+            "screen_usage": { "name": "UV LED Screen Usage Time" },
+            "film_usage": { "name": "FEP Usage" },
+            "print_status": {
+                "name": "Print Job Status",
+                "state": {
+                    "idle": "Idle",
+                    "homing": "Resetting",
+                    "dropping": "Descending",
+                    "exposing": "Exposing",
+                    "lifting": "Lifting",
+                    "pausing": "Executing Pause",
+                    "paused": "Paused",
+                    "stopping": "Executing Stop",
+                    "stopped": "Stopped",
+                    "complete": "Completed",
+                    "file_checking": "Checking File"
+                }
             }
         }
     }

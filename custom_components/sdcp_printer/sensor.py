@@ -17,7 +17,12 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 # pylint: disable-next=import-error, no-name-in-module
 from sdcp_printer.enum import SDCPMachineStatus
 
-from .const import DOMAIN, SDCPMachineStatusKey
+from .const import (
+    DOMAIN,
+    SDCP_PRINT_STATUS_MAPPING,
+    SDCPMachineStatusKey,
+    SDCPPrintStatusKey,
+)
 from .coordinator import SDCPPrinterDataUpdateCoordinator
 from .entity import BaseSDCPPrinterEntity, BaseSDCPPrinterEntityDescription
 
@@ -28,12 +33,6 @@ class SDCPSensorEntityDescription(
 ):
     """Base class for SDCP Printer sensor entity descriptions."""
 
-
-CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
-    key="current_status",
-    device_class=SensorDeviceClass.ENUM,
-    options=list(SDCPMachineStatusKey),
-)
 
 SENSOR_DESCRIPTIONS = [
     SDCPSensorEntityDescription(
@@ -64,6 +63,17 @@ SENSOR_DESCRIPTIONS = [
     ),
 ]
 
+CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="current_status",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPMachineStatusKey),
+)
+
+PRINT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="print_status",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPPrintStatusKey),
+)
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -74,13 +84,14 @@ async def async_setup_entry(
     coordinator: SDCPPrinterDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
         [
-            SDCPPrinterCurrentStatusSensor(
-                coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
-            ),
             *[
                 SDCPPrinterSensor(coordinator, description)
                 for description in SENSOR_DESCRIPTIONS
             ],
+            SDCPPrinterCurrentStatusSensor(
+                coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
+            ),
+            SDCPPrinterPrintStatusSensor(coordinator, PRINT_STATUS_SENSOR_DESCRIPTION),
         ]
     )
 
@@ -111,5 +122,16 @@ class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
             return SDCPMachineStatusKey.DEVICE_TEST.value
         if SDCPMachineStatus.FILE_TRANSFER in current_status:
             return SDCPMachineStatusKey.FILE_TRANSFER.value
+
+        return None
+
+
+class SDCPPrinterPrintStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
+    """Sensor for the print job status."""
+
+    @property
+    def native_value(self) -> str:
+        if self.coordinator.printer.print_status is not None:
+            return SDCP_PRINT_STATUS_MAPPING.get(self.coordinator.printer.print_status)
 
         return None

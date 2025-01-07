@@ -10,6 +10,22 @@
                     "exposure_test": "mdi:monitor-eye",
                     "device_test": "mdi:cog-sync"
                 }
+            },
+            "print_status": {
+                "default": "mdi:printer-3d",
+                "state": {
+                    "idle": "mdi:sleep",
+                    "homing": "mdi:home-import-outline",
+                    "dropping": "mdi:tray-arrow-down",
+                    "exposing": "mdi:mdi:monitor-eye",
+                    "lifting": "mdi:tray-arrow-up",
+                    "pausing": "mdi:printer-pos-pause-outline",
+                    "paused": "mdi:printer-pos-pause-outline",
+                    "stopping": "mdi:printer-pos-cancel-outline",
+                    "stopped": "mdi:printer-pos-cancel-outline",
+                    "complete": "mdi:printer-pos-check-outline",
+                    "file_checking": "mdi:file-clock-outline"
+                }
             }
         }
     }
