@@ -141,8 +141,9 @@ class SDCPPrinterPrintStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
 
     @property
     def native_value(self) -> str:
-        if self.coordinator.printer.print_status is not None:
-            return SDCP_PRINT_STATUS_MAPPING.get(self.coordinator.printer.print_status)
+        print_status = self.coordinator.printer.print_status
+        if print_status in SDCP_PRINT_STATUS_MAPPING:
+            return SDCP_PRINT_STATUS_MAPPING[print_status].value
 
         return None
 
@@ -152,7 +153,8 @@ class SDCPPrinterPrintErrorSensor(BaseSDCPPrinterEntity, SensorEntity):
 
     @property
     def native_value(self) -> str:
-        if self.coordinator.printer.print_error is not None:
-            return SDCP_PRINT_ERROR_MAPPING.get(self.coordinator.printer.print_error)
+        print_error = self.coordinator.printer.print_error
+        if print_error in SDCP_PRINT_ERROR_MAPPING:
+            return SDCP_PRINT_ERROR_MAPPING[print_error].value
 
         return None

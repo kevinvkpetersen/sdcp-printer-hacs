@@ -29,7 +29,7 @@
             "screen_usage": { "name": "UV LED Screen Usage Time" },
             "film_usage": { "name": "FEP Usage" },
             "print_status": {
-                "name": "Print Job Status",
+                "name": "Print Status",
                 "state": {
                     "idle": "Idle",
                     "homing": "Resetting",
@@ -45,7 +45,7 @@
                 }
             },
             "print_error": {
-                "name": "Print Job Error",
+                "name": "Print Error",
                 "state": {
                     "none": "Normal",
                     "md5_check": "File MD5 Check Failed",
