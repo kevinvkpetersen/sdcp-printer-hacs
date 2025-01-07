@@ -43,6 +43,17 @@
                     "complete": "Completed",
                     "file_checking": "Checking File"
                 }
+            },
+            "print_error": {
+                "name": "Print Job Error",
+                "state": {
+                    "none": "Normal",
+                    "md5_check": "File MD5 Check Failed",
+                    "file_io": "File Read Failed",
+                    "invalid_resolution": "Resolution Mismatch",
+                    "unknown_format": "Format Mismatch",
+                    "unknown_model": "Machine Model Mismatch"
+                }
             }
         }
     }

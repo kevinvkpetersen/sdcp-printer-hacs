@@ -19,8 +19,10 @@ from sdcp_printer.enum import SDCPMachineStatus
 
 from .const import (
     DOMAIN,
+    SDCP_PRINT_ERROR_MAPPING,
     SDCP_PRINT_STATUS_MAPPING,
     SDCPMachineStatusKey,
+    SDCPPrintErrorKey,
     SDCPPrintStatusKey,
 )
 from .coordinator import SDCPPrinterDataUpdateCoordinator
@@ -75,6 +77,13 @@ PRINT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
     options=list(SDCPPrintStatusKey),
 )
 
+PRINT_ERROR_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="print_error",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPPrintErrorKey),
+)
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -92,6 +101,7 @@ async def async_setup_entry(
                 coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
             ),
             SDCPPrinterPrintStatusSensor(coordinator, PRINT_STATUS_SENSOR_DESCRIPTION),
+            SDCPPrinterPrintErrorSensor(coordinator, PRINT_ERROR_SENSOR_DESCRIPTION),
         ]
     )
 
@@ -133,5 +143,16 @@ class SDCPPrinterPrintStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
     def native_value(self) -> str:
         if self.coordinator.printer.print_status is not None:
             return SDCP_PRINT_STATUS_MAPPING.get(self.coordinator.printer.print_status)
+
+        return None
+
+
+class SDCPPrinterPrintErrorSensor(BaseSDCPPrinterEntity, SensorEntity):
+    """Sensor for the print job error."""
+
+    @property
+    def native_value(self) -> str:
+        if self.coordinator.printer.print_error is not None:
+            return SDCP_PRINT_ERROR_MAPPING.get(self.coordinator.printer.print_error)
 
         return None

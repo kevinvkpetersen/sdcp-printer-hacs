@@ -3,7 +3,7 @@
 from enum import StrEnum
 
 # pylint: disable-next=import-error, no-name-in-module
-from sdcp_printer.enum import SDCPPrintStatus
+from sdcp_printer.enum import SDCPPrintError, SDCPPrintStatus
 
 # Integration constants
 DOMAIN = "sdcp_printer"
@@ -51,4 +51,25 @@ SDCP_PRINT_STATUS_MAPPING: dict[SDCPPrintStatus, SDCPPrintStatusKey] = {
     SDCPPrintStatus.STOPPED: SDCPPrintStatusKey.STOPPED,
     SDCPPrintStatus.COMPLETE: SDCPPrintStatusKey.COMPLETE,
     SDCPPrintStatus.FILE_CHECKING: SDCPPrintStatusKey.FILE_CHECKING,
+}
+
+
+class SDCPPrintErrorKey(StrEnum):
+    """Translation keys for the print error."""
+
+    NONE = "none"
+    MD5_CHECK = "md5_check"
+    FILE_IO = "file_io"
+    INVALID_RESOLUTION = "invalid_resolution"
+    UNKNOWN_FORMAT = "unknown_format"
+    UNKNOWN_MODEL = "unknown_model"
+
+
+SDCP_PRINT_ERROR_MAPPING: dict[SDCPPrintError, SDCPPrintErrorKey] = {
+    SDCPPrintError.NONE: SDCPPrintErrorKey.NONE,
+    SDCPPrintError.MD5_CHECK: SDCPPrintErrorKey.MD5_CHECK,
+    SDCPPrintError.FILE_IO: SDCPPrintErrorKey.FILE_IO,
+    SDCPPrintError.INVALID_RESOLUTION: SDCPPrintErrorKey.INVALID_RESOLUTION,
+    SDCPPrintError.UNKNOWN_FORMAT: SDCPPrintErrorKey.UNKNOWN_FORMAT,
+    SDCPPrintError.UNKNOWN_MODEL: SDCPPrintErrorKey.UNKNOWN_MODEL,
 }

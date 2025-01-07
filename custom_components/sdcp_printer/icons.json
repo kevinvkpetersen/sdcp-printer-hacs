@@ -26,6 +26,17 @@
                     "complete": "mdi:printer-pos-check-outline",
                     "file_checking": "mdi:file-clock-outline"
                 }
+            },
+            "print_error": {
+                "default": "mdi:printer-3d",
+                "state": {
+                    "none": "mdi:printer-pos-check-outline",
+                    "md5_check": "mdi:file-document-remove-outline",
+                    "file_io": "mdi:file-document-remove-outline",
+                    "invalid_resolution": "mdi:monitor-screenshot",
+                    "unknown_format": "mdi:file-document-remove-outline",
+                    "unknown_model": "mdi:printer-alert"
+                }
             }
         }
     }
