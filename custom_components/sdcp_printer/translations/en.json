@@ -54,6 +54,14 @@
                     "unknown_format": "Format Mismatch",
                     "unknown_model": "Machine Model Mismatch"
                 }
+            },
+            "current_layer": { "name": "Print Current Layer" },
+            "total_layers": { "name": "Print Total Layers" },
+            "current_time": { "name": "Print Current Time" },
+            "total_time": { "name": "Print Total Time" },
+            "file_name": {
+                "name": "Print File Name",
+                "state": { "no_job": "(none)" }
             }
         }
     }

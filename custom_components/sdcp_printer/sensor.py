@@ -63,6 +63,39 @@ SENSOR_DESCRIPTIONS = [
         icon="mdi:file-arrow-up-down-outline",
         value_fn=lambda coordinator: coordinator.printer.film_usage,
     ),
+    SDCPSensorEntityDescription(
+        key="current_layer",
+        icon="mdi:printer-3d-nozzle-outline",
+        value_fn=lambda coordinator: coordinator.printer.current_layer,
+    ),
+    SDCPSensorEntityDescription(
+        key="total_layers",
+        icon="mdi:printer-3d-nozzle-outline",
+        value_fn=lambda coordinator: coordinator.printer.total_layers,
+    ),
+    SDCPSensorEntityDescription(
+        key="current_time",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+        suggested_unit_of_measurement=UnitOfTime.HOURS,
+        suggested_display_precision=0,
+        value_fn=lambda coordinator: coordinator.printer.current_time,
+    ),
+    SDCPSensorEntityDescription(
+        key="total_time",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+        suggested_unit_of_measurement=UnitOfTime.HOURS,
+        suggested_display_precision=0,
+        value_fn=lambda coordinator: coordinator.printer.total_time,
+    ),
+    SDCPSensorEntityDescription(
+        key="file_name",
+        icon="mdi:file-document-outline",
+        value_fn=lambda coordinator: coordinator.printer.file_name
+        if coordinator.printer.is_printing
+        else "no_job",
+    ),
 ]
 
 CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
@@ -110,7 +143,7 @@ class SDCPPrinterSensor(BaseSDCPPrinterEntity, SensorEntity):
     """Generic sensor for the printer."""
 
 
-class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
+class SDCPPrinterCurrentStatusSensor(SDCPPrinterSensor):
     """Sensor for the printer status."""
 
     @property
@@ -136,7 +169,7 @@ class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
         return None
 
 
-class SDCPPrinterPrintStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
+class SDCPPrinterPrintStatusSensor(SDCPPrinterSensor):
     """Sensor for the print job status."""
 
     @property
@@ -148,7 +181,7 @@ class SDCPPrinterPrintStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
         return None
 
 
-class SDCPPrinterPrintErrorSensor(BaseSDCPPrinterEntity, SensorEntity):
+class SDCPPrinterPrintErrorSensor(SDCPPrinterSensor):
     """Sensor for the print job error."""
 
     @property
