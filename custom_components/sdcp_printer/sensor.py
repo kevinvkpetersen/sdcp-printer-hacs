@@ -17,7 +17,14 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 # pylint: disable-next=import-error, no-name-in-module
 from sdcp_printer.enum import SDCPMachineStatus
 
-from .const import DOMAIN, SDCPMachineStatusKey
+from .const import (
+    DOMAIN,
+    SDCP_PRINT_ERROR_MAPPING,
+    SDCP_PRINT_STATUS_MAPPING,
+    SDCPMachineStatusKey,
+    SDCPPrintErrorKey,
+    SDCPPrintStatusKey,
+)
 from .coordinator import SDCPPrinterDataUpdateCoordinator
 from .entity import BaseSDCPPrinterEntity, BaseSDCPPrinterEntityDescription
 
@@ -28,12 +35,6 @@ class SDCPSensorEntityDescription(
 ):
     """Base class for SDCP Printer sensor entity descriptions."""
 
-
-CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
-    key="current_status",
-    device_class=SensorDeviceClass.ENUM,
-    options=list(SDCPMachineStatusKey),
-)
 
 SENSOR_DESCRIPTIONS = [
     SDCPSensorEntityDescription(
@@ -62,7 +63,58 @@ SENSOR_DESCRIPTIONS = [
         icon="mdi:file-arrow-up-down-outline",
         value_fn=lambda coordinator: coordinator.printer.film_usage,
     ),
+    SDCPSensorEntityDescription(
+        key="current_layer",
+        icon="mdi:printer-3d-nozzle-outline",
+        value_fn=lambda coordinator: coordinator.printer.current_layer,
+    ),
+    SDCPSensorEntityDescription(
+        key="total_layers",
+        icon="mdi:printer-3d-nozzle-outline",
+        value_fn=lambda coordinator: coordinator.printer.total_layers,
+    ),
+    SDCPSensorEntityDescription(
+        key="current_time",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+        suggested_unit_of_measurement=UnitOfTime.HOURS,
+        suggested_display_precision=0,
+        value_fn=lambda coordinator: coordinator.printer.current_time,
+    ),
+    SDCPSensorEntityDescription(
+        key="total_time",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+        suggested_unit_of_measurement=UnitOfTime.HOURS,
+        suggested_display_precision=0,
+        value_fn=lambda coordinator: coordinator.printer.total_time,
+    ),
+    SDCPSensorEntityDescription(
+        key="file_name",
+        icon="mdi:file-document-outline",
+        value_fn=lambda coordinator: coordinator.printer.file_name
+        if coordinator.printer.is_printing
+        else "no_job",
+    ),
 ]
+
+CURRENT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="current_status",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPMachineStatusKey),
+)
+
+PRINT_STATUS_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="print_status",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPPrintStatusKey),
+)
+
+PRINT_ERROR_SENSOR_DESCRIPTION = SensorEntityDescription(
+    key="print_error",
+    device_class=SensorDeviceClass.ENUM,
+    options=list(SDCPPrintErrorKey),
+)
 
 
 async def async_setup_entry(
@@ -74,13 +126,15 @@ async def async_setup_entry(
     coordinator: SDCPPrinterDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
         [
-            SDCPPrinterCurrentStatusSensor(
-                coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
-            ),
             *[
                 SDCPPrinterSensor(coordinator, description)
                 for description in SENSOR_DESCRIPTIONS
             ],
+            SDCPPrinterCurrentStatusSensor(
+                coordinator, CURRENT_STATUS_SENSOR_DESCRIPTION
+            ),
+            SDCPPrinterPrintStatusSensor(coordinator, PRINT_STATUS_SENSOR_DESCRIPTION),
+            SDCPPrinterPrintErrorSensor(coordinator, PRINT_ERROR_SENSOR_DESCRIPTION),
         ]
     )
 
@@ -89,7 +143,7 @@ class SDCPPrinterSensor(BaseSDCPPrinterEntity, SensorEntity):
     """Generic sensor for the printer."""
 
 
-class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
+class SDCPPrinterCurrentStatusSensor(SDCPPrinterSensor):
     """Sensor for the printer status."""
 
     @property
@@ -111,5 +165,29 @@ class SDCPPrinterCurrentStatusSensor(BaseSDCPPrinterEntity, SensorEntity):
             return SDCPMachineStatusKey.DEVICE_TEST.value
         if SDCPMachineStatus.FILE_TRANSFER in current_status:
             return SDCPMachineStatusKey.FILE_TRANSFER.value
+
+        return None
+
+
+class SDCPPrinterPrintStatusSensor(SDCPPrinterSensor):
+    """Sensor for the print job status."""
+
+    @property
+    def native_value(self) -> str:
+        print_status = self.coordinator.printer.print_status
+        if print_status in SDCP_PRINT_STATUS_MAPPING:
+            return SDCP_PRINT_STATUS_MAPPING[print_status].value
+
+        return None
+
+
+class SDCPPrinterPrintErrorSensor(SDCPPrinterSensor):
+    """Sensor for the print job error."""
+
+    @property
+    def native_value(self) -> str:
+        print_error = self.coordinator.printer.print_error
+        if print_error in SDCP_PRINT_ERROR_MAPPING:
+            return SDCP_PRINT_ERROR_MAPPING[print_error].value
 
         return None

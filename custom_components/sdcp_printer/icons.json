@@ -10,6 +10,33 @@
                     "exposure_test": "mdi:monitor-eye",
                     "device_test": "mdi:cog-sync"
                 }
+            },
+            "print_status": {
+                "default": "mdi:printer-3d",
+                "state": {
+                    "idle": "mdi:sleep",
+                    "homing": "mdi:home-import-outline",
+                    "dropping": "mdi:tray-arrow-down",
+                    "exposing": "mdi:mdi:monitor-eye",
+                    "lifting": "mdi:tray-arrow-up",
+                    "pausing": "mdi:printer-pos-pause-outline",
+                    "paused": "mdi:printer-pos-pause-outline",
+                    "stopping": "mdi:printer-pos-cancel-outline",
+                    "stopped": "mdi:printer-pos-cancel-outline",
+                    "complete": "mdi:printer-pos-check-outline",
+                    "file_checking": "mdi:file-clock-outline"
+                }
+            },
+            "print_error": {
+                "default": "mdi:printer-3d",
+                "state": {
+                    "none": "mdi:printer-pos-check-outline",
+                    "md5_check": "mdi:file-document-remove-outline",
+                    "file_io": "mdi:file-document-remove-outline",
+                    "invalid_resolution": "mdi:monitor-screenshot",
+                    "unknown_format": "mdi:file-document-remove-outline",
+                    "unknown_model": "mdi:printer-alert"
+                }
             }
         }
     }

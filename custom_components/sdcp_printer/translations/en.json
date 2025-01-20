@@ -25,14 +25,43 @@
                     "device_test": "Calibrating"
                 }
             },
-            "uv_led_temperature": {
-                "name": "UV LED Temperature"
+            "uv_led_temperature": { "name": "UV LED Temperature" },
+            "screen_usage": { "name": "UV LED Screen Usage Time" },
+            "film_usage": { "name": "FEP Usage" },
+            "print_status": {
+                "name": "Print Status",
+                "state": {
+                    "idle": "Idle",
+                    "homing": "Resetting",
+                    "dropping": "Descending",
+                    "exposing": "Exposing",
+                    "lifting": "Lifting",
+                    "pausing": "Executing Pause",
+                    "paused": "Paused",
+                    "stopping": "Executing Stop",
+                    "stopped": "Stopped",
+                    "complete": "Completed",
+                    "file_checking": "Checking File"
+                }
             },
-            "screen_usage": {
-                "name": "UV LED Screen Usage Time"
+            "print_error": {
+                "name": "Print Error",
+                "state": {
+                    "none": "Normal",
+                    "md5_check": "File MD5 Check Failed",
+                    "file_io": "File Read Failed",
+                    "invalid_resolution": "Resolution Mismatch",
+                    "unknown_format": "Format Mismatch",
+                    "unknown_model": "Machine Model Mismatch"
+                }
             },
-            "film_usage": {
-                "name": "FEP Usage"
+            "current_layer": { "name": "Print Current Layer" },
+            "total_layers": { "name": "Print Total Layers" },
+            "current_time": { "name": "Print Current Time" },
+            "total_time": { "name": "Print Total Time" },
+            "file_name": {
+                "name": "Print File Name",
+                "state": { "no_job": "(none)" }
             }
         }
     }
